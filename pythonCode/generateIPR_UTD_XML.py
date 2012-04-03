@@ -32,6 +32,8 @@ def mainWork():
 	if not os.path.isfile(__INPUT_FILE_WITH_DATA__):
 		print ("ERROR: The file that you specified in the config file [" + __INPUT_FILE_WITH_DATA__ + "] does not exist and therefore cannot be processed ")
 		sys.exit(1)
+		
+	# at this point we should have got past all of the checks for the input data file. 
 
 	# create a python dictionary of all pollutants at all of the stations. 
 	dictionaryStationPollGas = {}
@@ -46,13 +48,20 @@ def mainWork():
 	dateRangeCounter = 0
 	
 	# read in the CSV file. 
-	rows = csv.reader(open('HourlyUTDEEA.csv', 'r'), delimiter=',', quotechar='"')
+	# remember the input csv file is specified in the __INPUT_FILE_WITH_DATA__ variable
+	# from the config file above. 
+	
+	rows = csv.reader(open(__INPUT_FILE_WITH_DATA__, 'r'), delimiter=',', quotechar='"')
 	
 	datesInInputFile = [] 
 	# an overly cautious approach to finding the maximum and minimum dates in the 
 	# input data file - in case it is not sorted itself. 
 	
 	# process each line of the CSV file individually. 
+	#
+	# we currently have a very simple structure to this file - which can 
+	# grow more complex as we expand this script. 
+	#Bray,32.225000,O3,21:00 02 04 2012
 	for row in rows:
 		siteName = row[0]
 		meanValue = row[1]
@@ -65,6 +74,9 @@ def mainWork():
 		date_object = datetime.strptime(dateTime, '%H:00 %d %m %Y')
 	
 		# put this date into the array of all of the dates encountered in the input data. 
+		# this will help us figure the date range - without requiring people to specify this 
+		# in a configuration file or parameter. 
+		
 		datesInInputFile.append(date_object)
 		
 		# let us make a key for the dictionary out of STATION$Pollutant
@@ -80,14 +92,14 @@ def mainWork():
 		
 		if not (dictKey in dictionaryStationPollGas):
 			dictionaryStationPollGas[dictKey] = [] # create a new list for this dictionary entry
+			# for example Bray$O3 - so Ozone (O3) and Bray station. 
 				
-		# add to the dictionary
+		# add this new key to the dictionary
 		dictionaryStationPollGas[dictKey].append(reading)
 
 	# dictionary entries have been created for all possible keys. 
 
 	# sort the array of dates that we have collected
-	
 	datesInInputFile.sort()
 	
 	minimumDate = datesInInputFile[0] # the first element is the oldest (minimum date)

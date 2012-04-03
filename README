@@ -12,3 +12,16 @@ of the file containing the raw data for processing.
 
 The Python script will check (1) if this is done correctly in the config file and then subsequently checks (2) if the
 file specified actually exists. If either of these cases are false then the script will exit with an error message. 
+
+** INPUT CSV FILE **
+
+To make this script usable by a large number of people we thought that it would be best to avoid database specific 
+connections. Everyone will have different databases, different schema, different ways of doing things. 
+The Python script assumes everyone who wants to use it can create a CSV file of the data they want to produce IPR compliant 
+Up-to-date data in XML format for. 
+
+The CSV input file then is HOURLY means
+
+Bray,32.225000,O3,21:00 02 04 2012
+
+Station/Location, mean value, pollutant code, HH:00 MM DD YYYY
