@@ -4,13 +4,36 @@ from datetime import datetime
 from pprint import pprint
 import csv 
 import sys
-
 import AggregatedReading as rR
+
+import os.path
+import ConfigParser
 
 def mainWork():
 
+	# read the config file - so that we don't hardcode in the names of the attributes
+	# the name of the config file is "setup.cfg"
+	config = ConfigParser.RawConfigParser()
+	config.read('setup.cfg')
+	
+	__INPUT_FILE_WITH_DATA__ = ""
 
+	try:
+		# get the name of the input file from the config file.  
+		__INPUT_FILE_WITH_DATA__ = config.get('IPRXML', 'DATA_FILE_INPUT')
+	except ConfigParser.NoOptionError:
+		print ("ERROR: You have no specified a file for import of the data for the IPR XML ")
+		sys.exit(1)
+		
+	# before we proceed we must check then if the INPUT FILE is actually valid. It could well be 
+	# marked in the config file but not actually exist. 
+	# The most pythonic way to do this is to use the os.path
+	
+	if not os.path.isfile(__INPUT_FILE_WITH_DATA__):
+		print ("ERROR: The file that you specified in the config file [" + __INPUT_FILE_WITH_DATA__ + "] does not exist and therefore cannot be processed ")
+		sys.exit(1)
 
+	# create a python dictionary of all pollutants at all of the stations. 
 	dictionaryStationPollGas = {}
 
 	## iterate over all of the rows from the database

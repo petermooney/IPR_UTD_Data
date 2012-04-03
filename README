@@ -4,3 +4,11 @@ Python Script to generate IPR UTD Data XML files from CSV input files.
 
 APRIL 2ND 2012 @ 11:39
 ** CODE NOT READY FOR GENERAL USAGE **
+
+** Specifying your input file **
+
+In the SETUP.cfg file you can insert the file name (or path to the file if it is placed in a different directory/folder)
+of the file containing the raw data for processing. 
+
+The Python script will check (1) if this is done correctly in the config file and then subsequently checks (2) if the
+file specified actually exists. If either of these cases are false then the script will exit with an error message. 
